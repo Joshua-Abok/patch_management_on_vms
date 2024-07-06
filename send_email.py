@@ -3,7 +3,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-from patch_management_on_vms.config import set_environment
+import tkinter as tk 
+from tkinter import messagebox
+
+from config import set_environment
 set_environment()
 
 
@@ -80,4 +83,29 @@ def send_email(subject, body):
 # if __name__ == "__main__":
 #     main()
 
-send_email("SEND_EMAIL_TEST", "EMAIL_BODY_DETAILS")
+def on_send_email(): 
+    subject = subject_entry.get()
+    body = body_text.get("1.0", tk.END)
+    send_email(subject, body)
+
+
+# create main window 
+root = tk.Tk()
+root.title("Email Sender")
+
+# create and place the subject label and entry
+tk.Label(root, text='Subject:').grid(row=0, column=0, padx=10, pady=5)
+subject_entry = tk.Entry(root, width=50)
+subject_entry.grid(row=0, column=1, padx=10, pady=5)
+
+# create and place the body label and text box 
+tk.Label(root, text="Body:").grid(row=1, column=0, padx=10, pady=5)
+body_text = tk.Text(root, width=50, height=15)
+body_text.grid(row=1, column=1, padx=10, pady=5)
+
+# create and place the send email button 
+send_button = tk.Button(root, text="Send Email", command=on_send_email)
+send_button.grid(row=2, column=1, padx=10, pady=10, sticky=tk.E)
+
+# run main event loop 
+root.mainloop()
